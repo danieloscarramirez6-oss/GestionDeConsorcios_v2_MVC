@@ -1,0 +1,131 @@
+﻿@{
+    var currentPath = Context.Request.Path.Value ?? "/";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Sistema de Gestion de Consorcios</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GestionDeConsorciosMVC.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+    <div class="app-shell">
+
+        <aside class="app-sidebar" data-sidebar>
+            <div class="sidebar-brand">
+                <a class="brand-link" asp-controller="Home" asp-action="AdminDashboard">
+                    <span class="brand-mark">GC</span>
+                    <span>
+                        <strong>Gestion</strong>
+                        <small>de Consorcios</small>
+                    </span>
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-label">Menu administrador</span>
+
+                <nav class="sidebar-nav">
+                    <a class="sidebar-link @(currentPath.StartsWith("/Home/AdminHome") ? "active" : "")"
+                       asp-controller="Home"
+                       asp-action="AdminDashboard">
+                        <span class="sidebar-link-icon">⌂</span>
+                        <span>Inicio</span>
+                    </a>
+
+                    <a class="sidebar-link @(currentPath.StartsWith("/Consorcios") ? "active" : "")"
+                       asp-controller="Consorcios"
+                       asp-action="Index">
+                        <span class="sidebar-link-icon">□</span>
+                        <span>Consorcios</span>
+                    </a>
+
+                    <a class="sidebar-link @(currentPath.StartsWith("/Gastos") ? "active" : "")"
+                       asp-controller="Gastos"
+                       asp-action="Index">
+                        <span class="sidebar-link-icon">$</span>
+                        <span>Gastos</span>
+                    </a>
+
+                    <a class="sidebar-link @(currentPath.StartsWith("/Expensas") ? "active" : "")"
+                       asp-controller="Expensas"
+                       asp-action="Index">
+                        <span class="sidebar-link-icon">#</span>
+                        <span>Expensas</span>
+                    </a>
+
+                    <a class="sidebar-link @(currentPath.StartsWith("/Comunicados") ? "active" : "")"
+                       asp-controller="Comunicados"
+                       asp-action="Index">
+                        <span class="sidebar-link-icon">!</span>
+                        <span>Comunicados</span>
+                    </a>
+
+                    <a class="sidebar-link @(currentPath.StartsWith("/Reclamos") ? "active" : "")"
+                       asp-controller="Reclamos"
+                       asp-action="Index">
+                        <span class="sidebar-link-icon">?</span>
+                        <span>Reclamos</span>
+                    </a>
+
+                    <a class="sidebar-link @(currentPath.StartsWith("/Reservas") ? "active" : "")"
+                       asp-controller="Reservas"
+                       asp-action="Index">
+                        <span class="sidebar-link-icon">+</span>
+                        <span>Reservas</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-footer">
+
+                <a class="sidebar-logout" asp-controller="Auth" asp-action="Login">
+                    <span class="sidebar-link-icon">X</span>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="app-main">
+            <header class="app-header">
+                <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-label="Abrir menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="header-title">
+                    <span>Sistema de Gestion de Consorcios</span>
+                    <h1>@(ViewData["Title"] ?? "Administrador")</h1>
+                </div>
+
+                <div class="header-actions">
+                    <div class="role-switcher">
+                        <span>Rol</span>
+                        <strong>Administrador</strong>
+                    </div>
+                </div>
+            </header>
+
+            <main class="app-content" role="main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" data-sidebar-overlay></div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
