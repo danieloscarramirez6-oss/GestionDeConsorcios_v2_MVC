@@ -1,7 +1,7 @@
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using GestionDeConsorcios_v2_MVC.Context;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 public class GastosController : Controller
 {
@@ -39,6 +39,7 @@ public class GastosController : Controller
     // GET: GASTOS/Create
     public IActionResult Create()
     {
+        ViewBag.Consorcios = new SelectList(_context.Consorcios, "Id", "Nombre");
         return View();
     }
 
@@ -47,14 +48,28 @@ public class GastosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,ConsorcioId,NumeroFactura,Fecha,Monto,Concepto,Categoria,ArchivoFacturaPath,Descripcion,FechaCreacion,Consorcio")] Gasto gasto)
+    public async Task<IActionResult> Create(Gasto gasto, IFormFile? archivoFactura)
     {
         if (ModelState.IsValid)
         {
+            if (archivoFactura != null && archivoFactura.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "facturas");
+                Directory.CreateDirectory(uploadsFolder);
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(archivoFactura.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await archivoFactura.CopyToAsync(stream);
+                }
+                gasto.ArchivoFacturaPath = "/facturas/" + uniqueFileName;
+            }
+            gasto.FechaCreacion = DateTime.UtcNow;
             _context.Add(gasto);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        ViewBag.Consorcios = new SelectList(_context.Consorcios, "Id", "Nombre");
         return View(gasto);
     }
 
