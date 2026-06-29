@@ -5,52 +5,25 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
+<section class="page-intro">
+    <div>
+        <h2>Consorcios</h2>
+        <p>Administracion de edificios y unidades funcionales.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Crear consorcio</a>
+</section>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-clean">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cuit)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Direccion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ciudad)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CodigoPostal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CantidadPisos)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Observaciones)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaCreacion)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.UnidadesFuncionales)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gastos)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comunicados)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amenities)
             </th>
             <th></th>
         </tr>
@@ -62,44 +35,14 @@
                 @Html.DisplayFor(model => item.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(model => item.Cuit)
-            </td>
-            <td>
                 @Html.DisplayFor(model => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Ciudad)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.CodigoPostal)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.CantidadPisos)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Observaciones)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaCreacion)
             </td>
             <td>
                 @Html.DisplayFor(model => item.UnidadesFuncionales)
             </td>
-            <td>
-                @Html.DisplayFor(model => item.Gastos)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Comunicados)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Amenities)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <td class="table-actions">
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Ver detalle</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
