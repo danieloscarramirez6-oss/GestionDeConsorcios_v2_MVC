@@ -1,0 +1,90 @@
+@model IEnumerable<Gasto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ConsorcioId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroFactura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Monto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Concepto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArchivoFacturaPath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaCreacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Consorcio)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.ConsorcioId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.NumeroFactura)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Monto)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Concepto)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Categoria)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ArchivoFacturaPath)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FechaCreacion)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Consorcio)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
