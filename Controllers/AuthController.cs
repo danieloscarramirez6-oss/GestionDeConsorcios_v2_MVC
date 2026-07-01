@@ -2,6 +2,7 @@ using GestionDeConsorcios_v2_MVC.Models;
 using GestionDeConsorcios_v2_MVC.Context;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace GestionDeConsorcios_v2_MVC.Controllers
 {
@@ -23,13 +24,30 @@ namespace GestionDeConsorcios_v2_MVC.Controllers
         [HttpPost]
         public IActionResult Login(Usuario usuario)
         {
-            var user = _context.Usuarios.FirstOrDefault(u => u.Email == usuario.Email && u.PasswordHash == usuario.PasswordHash && u.Activo);
+            var user = _context.Usuarios
+                    .Include(u => u.UnidadFuncional)
+                    .FirstOrDefault(u =>
+                        u.Email == usuario.Email &&
+                        u.PasswordHash == usuario.PasswordHash &&
+                        u.Activo);
             if (user != null)
             {
 
                 HttpContext.Session.SetInt32("UsuarioId", user.Id);
                 HttpContext.Session.SetString("UsuarioNombre", user.Nombre);
                 HttpContext.Session.SetString("UsuarioRol", user.Rol.ToString());
+
+                if (user.UnidadFuncional != null) {
+                    HttpContext.Session.SetInt32(
+                    "UnidadFuncionalId",
+                    user.UnidadFuncional.Id
+                     );
+
+                }
+                else
+                {
+                    HttpContext.Session.Remove("UnidadFuncionalId");
+                }
 
                 if (user.Rol == RolUsuario.Administrador)
                 {

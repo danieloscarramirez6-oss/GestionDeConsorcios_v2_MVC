@@ -15,7 +15,13 @@ public class PagosController : Controller
     // GET: PAGOS
     public async Task<IActionResult> Index()    
     {
-        return View(await _context.Pagos.ToListAsync());
+        int? unidadFuncionalId =
+    HttpContext.Session.GetInt32("UnidadFuncionalId");
+
+        var pagos = await _context.Pagos
+            .Where (p=> p.UnidadFuncionalId == unidadFuncionalId.Value).ToListAsync();
+        //  return View(await _context.Pagos.ToListAsync());
+        return View(pagos);
     }
 
     // GET: PAGOS/Details/5
