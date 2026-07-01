@@ -1,4 +1,4 @@
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GestionDeConsorcios_v2_MVC.Context;
@@ -43,9 +43,19 @@ public class PagosController : Controller
     }
 
     // GET: PAGOS/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        int? ufId = HttpContext.Session.GetInt32("UnidadFuncionalId");
+
+        if (ufId == null)
+            return RedirectToAction("Login", "Auth");
+
+        await CargarExpensasAsync(ufId.Value);
+
+        return View(new Pago
+        {
+            FechaPago = DateTime.Today
+        });
     }
 
     // POST: PAGOS/Create
@@ -53,30 +63,72 @@ public class PagosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,ExpensaId,FechaPago,MontoPagado,MedioPago,NumeroOperacion,BancoEntidad,ComprobantePath,Comentarios,Estado,FechaCreacion,FechaRevision,ObservacionAdministracion,Expensa")] Pago pago)
+    public async Task<IActionResult> Create(
+    [Bind("ExpensaId,FechaPago,MontoPagado,MedioPago,NumeroOperacion,BancoEntidad,ComprobantePath,Comentarios")]
+    Pago pago)
     {
+        int? ufId = HttpContext.Session.GetInt32("UnidadFuncionalId");
+
+        if (ufId == null)
+            return RedirectToAction("Login", "Auth");
+        bool expensaValida = await _context.Expensas.AnyAsync(e =>
+            e.Id == pago.ExpensaId &&
+            e.UnidadFuncionalId == ufId.Value);
+
+        if (!expensaValida)
+            ModelState.AddModelError("ExpensaId", "La expensa seleccionada no es válida.");
+
         if (ModelState.IsValid)
         {
-            _context.Add(pago);
+            pago.UnidadFuncionalId = ufId.Value;
+            pago.FechaCreacion = DateTime.UtcNow;
+            pago.Estado = EstadoPago.PendienteRevision;
+
+            _context.Pagos.Add(pago);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+        await CargarExpensasAsync(ufId.Value, pago.ExpensaId);
         return View(pago);
     }
+
+    private async Task CargarExpensasAsync(
+    int unidadFuncionalId,
+    int? seleccionada = null)
+    {
+        var expensas = await _context.Expensas
+            .Where(e => e.UnidadFuncionalId == unidadFuncionalId)
+            .OrderByDescending(e => e.FechaEmision)
+            .ToListAsync();
+
+        ViewBag.Expensas = new SelectList(
+            expensas,
+            "Id",
+            "Periodo",
+            seleccionada
+        );
+    }
+
 
     // GET: PAGOS/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        int? ufId = HttpContext.Session.GetInt32("UnidadFuncionalId");
 
-        var pago = await _context.Pagos.FindAsync(id);
+        if (id == null || ufId == null)
+            return NotFound();
+
+        var pago = await _context.Pagos.FirstOrDefaultAsync(p =>
+        p.Id == id &&
+        p.UnidadFuncionalId == ufId.Value);
+
         if (pago == null)
         {
             return NotFound();
         }
+        await CargarExpensasAsync(ufId.Value, pago.ExpensaId);
         return View(pago);
     }
 
@@ -85,34 +137,44 @@ public class PagosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,ExpensaId,FechaPago,MontoPagado,MedioPago,NumeroOperacion,BancoEntidad,ComprobantePath,Comentarios,Estado,FechaCreacion,FechaRevision,ObservacionAdministracion,Expensa")] Pago pago)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,ExpensaId,FechaPago,MontoPagado,MedioPago,NumeroOperacion,BancoEntidad,ComprobantePath,Comentarios")] Pago datos)
     {
-        if (id != pago.Id)
-        {
+
+        int? ufId = HttpContext.Session.GetInt32("UnidadFuncionalId");
+        if (ufId == null || id != datos.Id)
             return NotFound();
-        }
+
+        var pago = await _context.Pagos.FirstOrDefaultAsync(p =>
+            p.Id == id &&
+            p.UnidadFuncionalId == ufId.Value);
+
+        if (pago == null)
+            return NotFound();
+
+        bool expensaValida = await _context.Expensas.AnyAsync(e =>
+            e.Id == datos.ExpensaId &&
+            e.UnidadFuncionalId == ufId.Value);
+
+        if (!expensaValida)
+            ModelState.AddModelError("ExpensaId", "La expensa seleccionada no es válida.");
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(pago);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PagoExists(pago.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            pago.ExpensaId = datos.ExpensaId;
+            pago.FechaPago = datos.FechaPago;
+            pago.MontoPagado = datos.MontoPagado;
+            pago.MedioPago = datos.MedioPago;
+            pago.NumeroOperacion = datos.NumeroOperacion;
+            pago.BancoEntidad = datos.BancoEntidad;
+            pago.ComprobantePath = datos.ComprobantePath;
+            pago.Comentarios = datos.Comentarios;
+
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        return View(pago);
+
+        await CargarExpensasAsync(ufId.Value, datos.ExpensaId);
+        return View(datos);
     }
 
     // GET: PAGOS/Delete/5

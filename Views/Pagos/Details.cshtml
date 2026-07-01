@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutPropietario.cshtml";
 }
 
 <h1>Details</h1>
@@ -73,34 +74,7 @@
             @Html.DisplayFor(model => model.Estado)
         </dd>
     </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaCreacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaCreacion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaRevision)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaRevision)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ObservacionAdministracion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ObservacionAdministracion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Expensa)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Expensa)
-        </dd>
-    </dl>
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

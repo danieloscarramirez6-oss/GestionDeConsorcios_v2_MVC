@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 public class Pago
 {
     public int Id { get; set; }
@@ -11,11 +13,11 @@ public class Pago
     public string? Comentarios { get; set; }
     public EstadoPago Estado { get; set; } = EstadoPago.Aprobado;
     public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
-    public DateTime? FechaRevision { get; set; }
-    public string? ObservacionAdministracion { get; set; }
     public int? UnidadFuncionalId { get; set; }
+    [ValidateNever]
     public UnidadFuncional? UnidadFuncional { get; set; } = null!;
 
+    [ValidateNever]
     public Expensa Expensa { get; set; } = null!;
 }
 

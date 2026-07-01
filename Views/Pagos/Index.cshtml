@@ -5,12 +5,15 @@
     Layout = "~/Views/Shared/_LayoutPropietario.cshtml";
 }
 
-<h1>Index</h1>
+<section class="page-intro">
+    <div>
+        <h2>Pagos</h2>
+        <p>Registro y consulta de pagos de expensas.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Informar Pago</a>
+</section>
 
-<p>
-    <a asp-action="Create">Informar Pago</a>
-</p>
-<table class="table">
+<table class="table table-clean">
     <thead>
         <tr>
             <th>
@@ -23,24 +26,9 @@
                 @Html.DisplayNameFor(model => model.MedioPago)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumeroOperacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BancoEntidad)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ComprobantePath)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Comentarios)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Expensa)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -57,28 +45,13 @@
                 @Html.DisplayFor(model => item.MedioPago)
             </td>
             <td>
-                @Html.DisplayFor(model => item.NumeroOperacion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.BancoEntidad)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ComprobantePath)
-            </td>
-            <td>
                 @Html.DisplayFor(model => item.Comentarios)
             </td>
-            <td>
-                @Html.DisplayFor(model => item.Estado)
-            </td>
-           
-            <td>
-                @Html.DisplayFor(model => item.Expensa)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                <td class="table-actions">
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }

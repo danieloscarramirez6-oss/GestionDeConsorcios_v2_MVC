@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutPropietario.cshtml";
 }
 
 <h1>Edit</h1>
@@ -14,8 +15,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="ExpensaId" class="control-label"></label>
-                <input asp-for="ExpensaId" class="form-control" />
+                <label asp-for="ExpensaId">Expensa</label>
+                <select asp-for="ExpensaId"
+                        asp-items="ViewBag.Expensas"
+                        class="form-control">
+                    <option value="">Seleccione una expensa</option>
+                </select>
                 <span asp-validation-for="ExpensaId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -52,31 +57,6 @@
                 <label asp-for="Comentarios" class="control-label"></label>
                 <input asp-for="Comentarios" class="form-control" />
                 <span asp-validation-for="Comentarios" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaCreacion" class="control-label"></label>
-                <input asp-for="FechaCreacion" class="form-control" />
-                <span asp-validation-for="FechaCreacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaRevision" class="control-label"></label>
-                <input asp-for="FechaRevision" class="form-control" />
-                <span asp-validation-for="FechaRevision" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ObservacionAdministracion" class="control-label"></label>
-                <input asp-for="ObservacionAdministracion" class="form-control" />
-                <span asp-validation-for="ObservacionAdministracion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Expensa" class="control-label"></label>
-                <input asp-for="Expensa" class="form-control" />
-                <span asp-validation-for="Expensa" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
