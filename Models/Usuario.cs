@@ -8,6 +8,8 @@ public class Usuario
     public RolUsuario Rol { get; set; }
     public bool Activo { get; set; } = true;
     public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
+
+    public UnidadFuncional? UnidadFuncional { get; set; }
 }
 
 public enum RolUsuario

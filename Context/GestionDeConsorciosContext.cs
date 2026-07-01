@@ -105,6 +105,12 @@ namespace GestionDeConsorcios_v2_MVC.Context
                 .WithOne(r => r.Amenity)
                 .HasForeignKey(r => r.AmenityId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.UnidadFuncional)
+                .WithOne(uf => uf.Usuario)
+                .HasForeignKey<UnidadFuncional>(uf => uf.UsuarioId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

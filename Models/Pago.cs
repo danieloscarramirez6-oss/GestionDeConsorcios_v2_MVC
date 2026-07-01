@@ -14,6 +14,7 @@ public class Pago
     public DateTime? FechaRevision { get; set; }
     public string? ObservacionAdministracion { get; set; }
 
+
     public Expensa Expensa { get; set; } = null!;
 }
 

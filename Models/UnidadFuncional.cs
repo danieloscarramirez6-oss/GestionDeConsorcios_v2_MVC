@@ -17,6 +17,11 @@ public class UnidadFuncional
     public List<Expensa> Expensas { get; set; } = new();
     public List<Reserva> Reservas { get; set; } = new();
     public List<Reclamo> Reclamos { get; set; } = new();
+    public int? UsuarioId { get; set; }
+
+    [ValidateNever]
+    public Usuario? Usuario { get; set; }
+
 }
 
 public enum EstadoUnidadFuncional

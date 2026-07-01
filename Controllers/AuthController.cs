@@ -26,6 +26,11 @@ namespace GestionDeConsorcios_v2_MVC.Controllers
             var user = _context.Usuarios.FirstOrDefault(u => u.Email == usuario.Email && u.PasswordHash == usuario.PasswordHash && u.Activo);
             if (user != null)
             {
+
+                HttpContext.Session.SetInt32("UsuarioId", user.Id);
+                HttpContext.Session.SetString("UsuarioNombre", user.Nombre);
+                HttpContext.Session.SetString("UsuarioRol", user.Rol.ToString());
+
                 if (user.Rol == RolUsuario.Administrador)
                 {
                     // Redirigir a la vista de administrador
